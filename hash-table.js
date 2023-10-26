@@ -25,23 +25,16 @@ class HashTable {
   }
 
   insertNoCollisions(key, value) {
-    // this.count++;
-    // let index = this.hashMod(key);
-    // let newPair = new KeyValuePair(key, value)
-
-    // this.data[index] = newPair;
     let index = this.hashMod(key);
     if (!this.data[index]) {
-    this.count++;
+      this.count++;
 
-    let newPair = new KeyValuePair(key, value);
+      let newPair = new KeyValuePair(key, value);
 
-    this.data[index] = newPair;
+      this.data[index] = newPair;
     } else {
-      throw new Error("hash collision or same key/value pair already exists!")
+      throw new Error('hash collision or same key/value pair already exists!');
     }
-
-
   }
 
   insertWithHashCollisions(key, value) {
@@ -52,25 +45,35 @@ class HashTable {
       this.count++;
 
       this.data[index] = newPair;
-      } else {
-        this.count++;
-        let oldIndex = this.data[index];
-        this.data[index] = newPair;
-        this.data[index].next = oldIndex;
+    } else {
+      this.count++;
+      let oldIndex = this.data[index];
+      this.data[index] = newPair;
+      this.data[index].next = oldIndex;
+    }
   }
-
-}
 
   insert(key, value) {
     let index = this.hashMod(key);
-    let newPair = new KeyValuePair(key, value);
+    if (!this.data[index]) {
+      this.data[index] = new KeyValuePair(key, value);
+      this.count++;
+    } else {
+      let curr = this.data[index];
+      while (curr) {
+        if (curr.key === key) {
+          curr.value = value;
+          return;
+        }
+        curr = curr.next;
+      }
 
-    if (this.data[index].key === key) {
-      this.data[index].value = value;
+      let prevPair = this.data[index];
+      this.data[index] = new KeyValuePair(key, value);
+      this.data[index].next = prevPair;
+      this.count++;
     }
   }
 }
-
-let hashTable = new HashTable(2);
 
 module.exports = HashTable;
