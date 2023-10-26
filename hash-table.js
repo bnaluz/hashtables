@@ -25,15 +25,49 @@ class HashTable {
   }
 
   insertNoCollisions(key, value) {
-    // Your code here
+    // this.count++;
+    // let index = this.hashMod(key);
+    // let newPair = new KeyValuePair(key, value)
+
+    // this.data[index] = newPair;
+    let index = this.hashMod(key);
+    if (!this.data[index]) {
+    this.count++;
+
+    let newPair = new KeyValuePair(key, value);
+
+    this.data[index] = newPair;
+    } else {
+      throw new Error("hash collision or same key/value pair already exists!")
+    }
+
+
   }
 
   insertWithHashCollisions(key, value) {
-    // Your code here
+    let index = this.hashMod(key);
+    let newPair = new KeyValuePair(key, value);
+
+    if (!this.data[index]) {
+      this.count++;
+
+      this.data[index] = newPair;
+      } else {
+        this.count++;
+        let oldIndex = this.data[index];
+        this.data[index] = newPair;
+        this.data[index].next = oldIndex;
   }
 
+}
+
   insert(key, value) {
-    // Your code here
+    let index = this.hashMod(key);
+    let newPair = new KeyValuePair(key, value);
+
+    if (this.data[index].key === key) {
+      this.data[index].value = value;
+    }
   }
 }
 
